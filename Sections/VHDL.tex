@@ -1,0 +1,35 @@
+\section{VHDL}
+\subsection{Funktionen}
+Funktionen haben mehrere Eingänge und einen Ausgang. Es können dadruch zB Operatoren überschrieben werden.
+\begin{itemize}
+\item Funktionen können rekursiv aufgerufen werden.
+\item Funktionen verwenden keine Signalzuweisungen, sondern nur Variablenzuweisung
+\item Der Funktionskörper darf keine Warteanweisung oder eine Signalzuweisung enthalten.
+\end{itemize}
+
+\begin{lstlisting}
+function PARGEN(AVECT : std_ulogic_vector) return std_ulogic is
+	variable PO_VAR : std_ulogic;
+begin
+	PO_VAR := '1';
+	return PO_VAR;
+end function PARGEN;
+\end{lstlisting}
+
+\subsection{Prozeduren}
+Prozeduren haben mehrere Ein und Ausgänge. Sie werden häufig für Test-Banches benutzt und sollten nur Vorsichtig für Hardware code verwendet werden.
+
+Beispiel mit 3 Eingängen und 2 Ausgängen:
+\begin{lstlisting}
+procedure Comp_3(In1,R :in real; Step :in integer; W1,W2 :out real) is
+	variable counter: Integer;
+begin
+	W1 := 1.43 * In1;
+	W2 := 1.0;
+	L1: for counter in 1 to Step loop
+		W2 := W2 * W1;
+		exit L1 when W2 > R;
+	end loop L1;
+	assert (W2 < R)report "Out of range" severity Error;
+end procedure Comp_3;
+\end{lstlisting}
