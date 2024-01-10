@@ -1,4 +1,14 @@
 \section{Serial Interfaces}
+\subsection{Network Toopologies}
+Point-to-point, Star, Bus, Ring, Mesh, Line, Tree, Fully Connected
+
+\subsection{LVDS}
+Low Voltage Digital Signalling pads are hardware specific. They are marked with ``N'' and ``P'' in Vivado.
+\begin{lstlisting}
+set_property IOSTANDARD LVDS [get_ports clk_p]
+\end{lstlisting}
+
+
 \subsection{SPI}
 Benötigt 3 + \#Slaves Pins und wird max bis 100MHz betrieben. Eine Transaktion starte, wenn CS auf 0 springt.
 \begin{center}

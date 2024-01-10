@@ -1,11 +1,21 @@
 \section{Memory}
+RAM - Signal\\
+ROM - Konstante
+\begin{center}
+	\includegraphics[width=0.5\columnwidth]{Images/rom_matrix.png}
+	\includegraphics[width=0.45\columnwidth]{Images/basic_cell.png}
+\end{center}
+
+\noindent
 Die Grösse wird wie folgt vom Speicher beschrieben:
 \begin{center}
-	\includegraphics[width=0.7\columnwidth]{Images/memory}
+	\includegraphics[width=0.5\columnwidth]{Images/memory}
 \end{center}
 Dabei ist Width die Anzahl an Bits pro Wort und Depth die Anzahl möglichen Addressen $Depth=2^{Address\_width}$. 
 
-Die Schnittstelle ist SinglePort RAM, welches erlaubt ein Zugriff pro Zyklus. True DualPort, wobei damit zwei unterschieliche Addressen im gleichen Zyklus gelesen und beschrieben werden können und Simple DualPort, wo ein Port fürs lesen und der andere fürs schreiben zuständig ist.
+Die Schnittstelle ist SinglePort RAM, welches ein Zugriff pro Zyklus erlaubt. True DualPort, wobei damit zwei unterschieliche Addressen im gleichen Zyklus gelesen und beschrieben werden können und Simple DualPort, wo ein Port fürs lesen und der andere fürs schreiben zuständig ist.
+
+Geschrieben wird immer synchron. Gelesen kann ein Block synchron und bei verteilten Zugriffen asynchron werden.
 
 \begin{center}
 	\includegraphics[width=0.7\columnwidth]{Images/ram_interface}
@@ -27,8 +37,12 @@ port(
   dout:out std_logic_vector(DATA_WIDTH - 1downto 0);
   we, en: in std_logic ); 
 end entity RAM;
-
 \end{lstlisting}
+
+\subsubsection{Operating Modes}
+\textbf{Write first}: input data is simultaneously written into memory address location and driven on data output (= transparent).
+\textbf{Read first}: data previously stored at address location is driven on data output, while new input data is being stored at address location.
+\textbf{No Change Mode}: output latches unchanged during whole write operation. Data at output = previous data.
 
 \subsection{Distributed RAM}
 Werte werden in LUTs gespeichert, schreibt synchron und liest asynchron. Dabei können grosse Speicher instaziiert werden, sind aber nur für kleine schnell erreichbar.
@@ -113,3 +127,15 @@ begin
   end process;
 end behavioral;
 \end{lstlisting}
+
+\subsection{ROM}
+Gleich wie RAM, wobei die gespeicherten Werte keine Signale sondern Konstanten sind.
+
+\subsection{Initialisierung}
+Standartmässig werden alle Werte auf 0 gesetzt. Es kann manuell der initiale Zustand bestimmt werden.
+\begin{lstlisting}
+signal bram: ram_type := ( -- initializes a few ram cells
+x"ffff", x"fffe", x"fffd", x"fffc", x"fffb", x"fffa", x"fff9", others => x"0000");
+\end{lstlisting}
+
+

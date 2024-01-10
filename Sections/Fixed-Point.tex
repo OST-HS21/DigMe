@@ -30,6 +30,15 @@ constant REAL_NUM : real := -2.5248;
 signal sNumber : signed(7 downto 0) := to_signed(integer(2.0**5 * REAL_NUM), 8);
 \end{lstlisting}
 
+
+\textbf{Beispiel} Addition
+\begin{lstlisting}
+sum<= (A(A'left) & A) + (B(B'left) & B);
+\end{lstlisting}
+
+
+
+
 \textbf{Beispiel} Multiplikation
 \begin{lstlisting}
 constant S_MULTIPLICAND : real := 1.25; -- binary 01.01
@@ -70,13 +79,24 @@ b <= to_ufixed(arg => 2.5248,
   round_style => FIXED_ROUND)
 \end{lstlisting}
 
+
 \begin{center}
 	\includegraphics[width=\columnwidth]{Images/saturation}
 \end{center}
 
+\textbf{Beispiel} Subtraktion
+\begin{lstlisting}
+-- fixed_pkg
+signal sMinuend: sfixed(2 downto -3) := to_sfixed(MINUEND, 2, -3); -- Q3.3
+signal sSubtrahend:sfixed(0 downto -4):= to_sfixed(SUBTRAHEND,0,-4); -- Q1.4
+difference <= sMinuend - sSubtrahend;
+\end{lstlisting}
+
 \textbf{Beispiel} Multiplikation
 \begin{lstlisting}
 -- fixed_pkg
+constant S_MULTIPLICAND : real := 1.25; -- b01.01
+constant S_MULTIPLIER : real := -1.25;  -- b10.11
 signal sMultiplicand : sfixed(1 downto -2) := to_sfixed(S_MULTIPLICAND, 1, -2); -- sQ2.2
 signal sMultiplier : sfixed(1 downto -2) := to_sfixed (S_MULTIPLIER, 1, -2); -- sQ2.2
 signal sProduct : sfixed(3 downto -4); -- Q4.4 -> Q(n1+n2).(m1+m2)
@@ -89,7 +109,8 @@ signal sProductShort : sfixed(2 downto -4);
 sProductShort <= resize(sProduct,2,-4);
 \end{lstlisting}
 
-\subsubsection{Limits}
+
+Sizing rules used by fixed\_pkg:
 \begin{center}
 	\includegraphics[width=\columnwidth]{Images/limits}
 \end{center}
@@ -106,3 +127,4 @@ Für signed * signed: MSB ist redundant
 \[
 Q(n1,m1) \cdot Q(n2,m2) = Q(n1 + n2 -1, m1 + m2+1)
 \]
+Corner case: $-1\cdot-1 = -1$ must be checked!

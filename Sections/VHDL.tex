@@ -1,10 +1,19 @@
 \section{VHDL}
+
+
+\subsection{Generate}
+\begin{lstlisting}
+simple_example : for i in 0 to 7 generate
+	x(i) <= a(i) xor b(7 - i); --no begin, because 
+end generate;								 --no declaration
+\end{lstlisting}
+\vspace{-30pt}
+
 \subsection{Funktionen}
-Funktionen haben mehrere Eingänge und einen Ausgang. Es können dadruch zB Operatoren überschrieben werden.
-\begin{itemize}
-\item Funktionen können rekursiv aufgerufen werden.
-\item Funktionen verwenden keine Signalzuweisungen, sondern nur Variablenzuweisung
-\item Der Funktionskörper darf keine Warteanweisung oder eine Signalzuweisung enthalten.
+\begin{itemize}[itemsep=-4pt]
+	\item Funktionen können rekursiv aufgerufen werden.
+	\item Funktionen verwenden keine Signalzuweisungen, sondern nur Variablenzuweisung
+	\item Der Funktionskörper darf keine Warteanweisung oder eine Signalzuweisung enthalten.
 \end{itemize}
 
 \begin{lstlisting}
@@ -15,9 +24,10 @@ begin
 	return PO_VAR;
 end function PARGEN;
 \end{lstlisting}
+\vspace{-30pt}
 
 \subsection{Prozeduren}
-Prozeduren haben mehrere Ein und Ausgänge. Sie werden häufig für Test-Banches benutzt und sollten nur Vorsichtig für Hardware code verwendet werden.
+Prozeduren werden häufig für Test-Banches benutzt und sollten nur Vorsichtig für Hardware code verwendet werden.
 
 Beispiel mit 3 Eingängen und 2 Ausgängen:
 \begin{lstlisting}
@@ -33,3 +43,39 @@ begin
 	assert (W2 < R)report "Out of range" severity Error;
 end procedure Comp_3;
 \end{lstlisting}
+\vspace{-30pt}
+
+\subsection{Arrays}
+\begin{lstlisting}
+type OneD_x_OneD_Int is array (1 to 3) of integer range 0 to 15;
+type OneD_x_oneD_vector is array (1 to 3) of bit_vector(1 to 4);
+type TwoD is array(1 to 3, 1 to 4) of bit;
+subtype int_cols is integer (0 to 5); -- Range 0 to 5
+type enum_rows is (a,b,c,d,e,f);
+type fpga_pads is array(enum_rows, int_cols) of std_ulogic;
+\end{lstlisting}
+\vspace{-30pt}
+
+\subsection{Records}
+\begin{lstlisting}
+type memory_access is record
+	address   : integer range 0 to address_max - 1;
+	mem_block : integer range 0 to 3;
+	data : std_ulogic_vector(word_width - 1 downto 0);
+end record;
+\end{lstlisting}
+\vspace{-30pt}
+
+
+\subsection{Package}
+\begin{lstlisting}
+-- Package Declaration
+package <package_name> is
+	<declarations>;
+end <package_name>;
+-- Package Body
+package body <package_name> is
+	<list of definitions>;
+end <package_name>;
+\end{lstlisting}
+

@@ -16,10 +16,11 @@ set_property IOSTANDARD LVCMOS33 [get_ports clk_100MHz]
 -- Pull up for resetn signal
 set_property PULLTYPE PULLUP [get_ports resetn]
 \end{lstlisting}
+\vspace{-20pt}
 
 Vivado IO Planner
 \begin{center}
-	\includegraphics[width=0.4\columnwidth]{Images/ioplanner}
+	\includegraphics[width=0.8\columnwidth]{Images/ioplanner}
 \end{center}
 
 \subsection{Timing}
@@ -27,7 +28,7 @@ Vivado IO Planner
 \item \textbf{Clock Distribution} delay $t_{di}$, clock latency: Zeitverzögerung gemessen vom Auftreten der Taktflanke an der Taktquelle bis zum Zustandsübergang am Ziel (Endpunkt)
 \item \textbf{Clock Skew} $t_{sk}$: Ungenauigkeit der gleichen Taktflanke, die an verschiedenen Stellen im Taktbereich.
 \item \textbf{Clock Jitter} $t_jt$: Variabilität der aufeinanderfolgenden Taktflanken, die an der gleichen Stelle ankommen.
-\item \textbf{Slack}: Differenz zwischen benötigter Zeit und Ankunftszeit, auch als Marge bekannt. Negativer Slack => Zeitproblem
+\item \textbf{Slack}: Differenz zwischen benötigter Zeit und Ankunftszeit, auch als Marge bekannt. Negativer Slack $\Rightarrow$ Zeitproblem
 \end{itemize}
 \begin{center}
 	\includegraphics[width=\columnwidth]{Images/slack}
@@ -50,12 +51,16 @@ set_output_delay -clock SysClock -min -0.5  [get_ports Dout]
 set_clock_latency -source 14 [get_clocks SysClock]
 -- jitter definition
 set_input_jitter SysClock 0.3
+-- Path intentionally not meeting timing requirements
+set_false_path -from <source> -to <destination>
 \end{lstlisting}
+
 
 \subsection{External Components}
 \begin{align*}
 	t_{input\_delay} &= t_{c\_ext} + t_{pcq\_FF1} + t_{d\_board1} - t_{c\_b1} \\
-	t_{output\_delay} &= t_{pcbq\_FF3} + t_{d\_out}
+	t_{output\_delay} &= t_{pcbq\_FF3} + t_{d\_out} \\
+	t_{delay\_on\_FR4\_PCB} &\approx 0.01 \unit{ns/mm}
 \end{align*}
 	
 \begin{center}
