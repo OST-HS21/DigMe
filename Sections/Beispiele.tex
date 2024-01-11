@@ -40,7 +40,8 @@ use ieee.std_logic_1164.all;
 use work.parity_package.all;
 	
 entity parity_gen_8 is
-	port( A : in std_ulogic_vector (nibble - 1 downto 0)
+	port(
+		A : in std_ulogic_vector (nibble - 1 downto 0);
 		B : in std_ulogic_vector (word - 1 downto 0);
 		POA, POB : out std_ulogic);
 end entity parity_gen_8;
@@ -52,6 +53,26 @@ begin
 	POA <= PAR_GEN(A); -- package can be used
 	POB <= PAR_GEN(B); -- without further declaration
 end architecture RTL;
+\end{lstlisting}
+
+\subsection{I2C}
+\begin{lstlisting}
+entity i2c_example is
+	port(
+		SDA : inout std_logic;
+		SCL : inout std_logic);
+end entity;
+
+architecture behavioral of i2c_example is
+	signal SDAin   : std_logic;
+	signal SDAout  : std_logic;
+	signal scl_ena : std_logic;
+	signal scl_clk : std_logic;
+begin
+	SDA   <= '0' when SDAout = '0' else 'Z';
+	SDAin <= SDA;
+	SCL <= '0' when (scl_ena = '1' and scl_clk = '0') else 'Z';
+end behavioral;
 \end{lstlisting}
 
 
