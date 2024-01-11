@@ -1,0 +1,57 @@
+\section{Beispiele}
+
+\subsection{Package erstellen}
+
+\begin{lstlisting}
+library ieee;
+use ieee.std_logic_1164.all;
+
+package parity_package is
+	constant nibble : integer; 
+	constant word	: integer; -- initialization optional
+	function PAR_GEN(AVECT : std_ulogic_vector) return std_ulogic;
+end package parity_package;
+
+package body parity_package is
+	function PAR_GEN(AVECT : std_ulogic_vector) return std_ulogic is
+		variable PO_VAR : std_ulogic;
+	begin
+		PO_VAR := '1';
+		for I in AVECT'range loop
+			if AVECT(I) = '1' then
+				PO_VAR := not PO_VAR;
+			end if;
+		end loop;
+		return PO_VAR;
+	end function PAR_GEN;
+	
+	constant nibble : integer := 4;
+	constant word	: integer := 8;
+end package body parity_package;
+\end{lstlisting}
+\vspace{-20px}
+
+
+\subsection{Package nutzen}
+\begin{lstlisting}
+library ieee;
+-- declaration of used packages
+use ieee.std_logic_1164.all;
+use work.parity_package.all;
+	
+entity parity_gen_8 is
+	port( A : in std_ulogic_vector (nibble - 1 downto 0)
+		B : in std_ulogic_vector (word - 1 downto 0);
+		POA, POB : out std_ulogic);
+end entity parity_gen_8;
+
+architecture RTL of parity_gen_8 is
+-- no function definition anymore.
+-- Function is defined in package.
+begin
+	POA <= PAR_GEN(A); -- package can be used
+	POB <= PAR_GEN(B); -- without further declaration
+end architecture RTL;
+\end{lstlisting}
+
+

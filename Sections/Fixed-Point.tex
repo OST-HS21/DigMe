@@ -29,13 +29,13 @@ constant REAL_NUM : real := -2.5248;
 -- the decimal point has to be shifted to the right by 5 positions
 signal sNumber : signed(7 downto 0) := to_signed(integer(2.0**5 * REAL_NUM), 8);
 \end{lstlisting}
-
+\vspace{-20pt}
 
 \textbf{Beispiel} Addition
 \begin{lstlisting}
 sum<= (A(A'left) & A) + (B(B'left) & B);
 \end{lstlisting}
-
+\vspace{-20pt}
 
 
 
@@ -51,6 +51,7 @@ sProduct <= sMultiplicand * sMultiplier; -- Keep in mind: -- 2 sign bits
 signal sProductShort : signed(6 downto 0); -- sQ4.4; sQ(n1+n2 -1).(m1+m2)
 sProductShort <= sProduct(6 downto 0);
 \end{lstlisting}
+\vspace{-20pt}
 
 
 Für die IEEE fixed\_pkg sind folgende Zeilen notwendig
@@ -78,10 +79,11 @@ b <= to_ufixed(arg => 2.5248,
   overflow_style => FIXED_SATURATE,
   round_style => FIXED_ROUND)
 \end{lstlisting}
+\vspace{-20pt}
 
 
 \begin{center}
-	\includegraphics[width=\columnwidth]{Images/saturation}
+	\includegraphics[width=.75\columnwidth]{Images/saturation}
 \end{center}
 
 \textbf{Beispiel} Subtraktion
@@ -91,6 +93,8 @@ signal sMinuend: sfixed(2 downto -3) := to_sfixed(MINUEND, 2, -3); -- Q3.3
 signal sSubtrahend:sfixed(0 downto -4):= to_sfixed(SUBTRAHEND,0,-4); -- Q1.4
 difference <= sMinuend - sSubtrahend;
 \end{lstlisting}
+\vspace{-20pt}
+
 
 \textbf{Beispiel} Multiplikation
 \begin{lstlisting}
